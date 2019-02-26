@@ -107,7 +107,7 @@ w0 = 2*math.pi*f0
 dfi = 10
 signal_fi = []
 for i in range(0, len(time_new)):
-    signal_fi.append(math.sin((w0*time_new[i])+dfi*new_signal[i]))
+    signal_fi.append(math.sin((w0*time_new[i])+dfi*new_signal[i]/max(new_signal)))
     print(signal_fi[i])
 plt.figure(9)
 plt.plot(time_new, signal_fi)

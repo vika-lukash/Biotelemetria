@@ -54,12 +54,14 @@ f0 = fd*100
 w0 = 2*math.pi*f0
 m = 1
 signal_am = []
+norm_new_signal = []
 for i in range(0, len(time_new)):
-    signal_am.append((1+m*new_signal[i]/max(new_signal))*math.sin((w0*time_new[i])))
+    signal_am.append((1+m*new_signal[i]/max(abs(new_signal)))*math.sin((w0*time_new[i])))
+    norm_new_signal.append(new_signal[i]/max(abs(new_signal)))
     print(signal_am[i])
 plt.figure(5)
 plt.plot(time_new, signal_am)
-plt.plot(time_new, new_signal)
+plt.plot(time_new, norm_new_signal)
 plt.xlabel('time(s)')
 plt.ylabel('U(mV)')
 plt.title('Signal:orange-signal, blue-mod')
@@ -81,12 +83,12 @@ dw = 20*math.pi
 signal_fm = []
 integral = 0
 for i in range(0, len(time_new)):
-    integral = integral + (new_signal[i]/max(new_signal))*0.065 # переходить от интеграла к сумме?
+    integral = integral + (new_signal[i]/max(abs(new_signal)))*0.065 # переходить от интеграла к сумме?
     signal_fm.append(math.sin((w0*time_new[i])+dw*integral))
     print(signal_fm[i])
 plt.figure(7)
 plt.plot(time_new, signal_fm)
-plt.plot(time_new, new_signal)
+plt.plot(time_new, norm_new_signal)
 plt.xlabel('time(s)')
 plt.ylabel('U(mV)')
 plt.title('Signal:orange-signal, blue-mod')
@@ -107,11 +109,11 @@ w0 = 2*math.pi*f0
 dfi = 10
 signal_fi = []
 for i in range(0, len(time_new)):
-    signal_fi.append(math.sin((w0*time_new[i])+dfi*new_signal[i]/max(new_signal)))
+    signal_fi.append(math.sin((w0*time_new[i])+dfi*new_signal[i]/max(abs(new_signal))))
     print(signal_fi[i])
 plt.figure(9)
 plt.plot(time_new, signal_fi)
-plt.plot(time_new, new_signal)
+plt.plot(time_new, norm_new_signal)
 plt.xlabel('time(s)')
 plt.ylabel('U(mV)')
 plt.title('Signal:orange-signal, blue-mod')

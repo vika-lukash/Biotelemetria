@@ -51,16 +51,16 @@ fd = 1/0.065
 freqs = []
 for i in np.arange(0, fd, fd/(len(new_signal))):
     freqs.append(i)
-plt.figure(4)
-plt.plot(freqs)
-plt.figure(5)
-plt.plot(freqs, spektr_new)
+# plt.figure(4)
+# plt.plot(freqs)
+# plt.figure(5)
+# plt.plot(freqs, spektr_new)
 
 # Amplitude modulation
 fd = 1/0.065
 f0 = fd*100
 w0 = 2*math.pi*f0
-m = 1.5
+m = 1
 signal_am = []
 norm_new_signal = []
 ma = max(abs(new_signal))
@@ -120,20 +120,59 @@ def rect_generator(start,t,h,signal):
 
 
 
-T = 6000
-t = 1700
+T = 8000
+t = 6000
 h = 1
 start = 0
-leng = (len(new_signal))
-print(leng/T)
-rect = rect_generator((start), t, h, new_signal)
-start += T
-while start <= leng:
-    rect += rect_generator((start), t, h, new_signal)
-    start += T
+def rect_summator(start, t, T, h, signal):
+    leng = (len(signal))
+    print(leng / T)
+    rect = np.zeros(leng)
+    while start <= leng:
+        rect += rect_generator((start), t, h, new_signal)
+        start += T
+    return rect
+rect = rect_summator(start, t, T, h, new_signal)
+
 print(rect)
-plt.figure(3)
+plt.figure(1)
 plt.plot(time_new, rect)
+
+
+# AIM modulation
+fd = 1/0.065
+f0 = fd*100
+w0 = 2*math.pi*f0
+m = 1
+signal_aim = []
+norm_new_signal = []
+ma = max(abs(new_signal))
+for i in range(0, len(time_new)):
+    sum = 0
+    signal_aim.append(m*new_signal[i]/ma*rect[i])
+    norm_new_signal.append(new_signal[i]/ma)
+
+
+print(freqs)
+print(signal_aim)
+plt.figure(2)
+plt.plot(time_new, signal_aim)
+plt.plot(time_new, norm_new_signal)
+# plt.plot(time_new, norm_new_signal)
+plt.xlabel('time(s)')
+plt.ylabel('U(mV)')
+plt.title('Signal:orange-signal, blue-mod')
+
+#Amplitude modulation spectr
+spektr_aim = abs(np.fft.fft(signal_aim))
+plt.figure(3)
+plt.plot(freqs, spektr_aim)
+plt.plot(freqs, spektr_new)
+plt.xlabel('F(Hz)')
+plt.title('Spectr:orange-old, blue-new')
+
+
+
 plt.show()
 
 
@@ -203,5 +242,7 @@ plt.show()
 #plt.plot(spektr_new)
 #plt.xlabel('F(Hz)')
 #plt.title('Spectr:orange-old, blue-new')
+
+
 
 

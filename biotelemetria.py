@@ -102,7 +102,7 @@ for i in range(np.shape(spektr_mod)[0]-1):
 f_stop = freqs[i]
 #print(sum_new)
 # print(f_sr)
-print(np.shape(spektr_mod)[0]-1)
+#print(np.shape(spektr_mod)[0]-1)
 
 
 rect = []
@@ -120,58 +120,66 @@ def rect_generator(start,t,h,signal):
 
 
 
-T = 8000
-t = 6000
-h = 1
-start = 0
+
 def rect_summator(start, t, T, h, signal):
     leng = (len(signal))
-    print(leng / T)
+    #print(leng / T)
     rect = np.zeros(leng)
     while start <= leng:
         rect += rect_generator((start), t, h, new_signal)
         start += T
     return rect
-rect = rect_summator(start, t, T, h, new_signal)
+#rect = rect_summator(start, t, T, h, new_signal)
 
-print(rect)
-plt.figure(1)
-plt.plot(time_new, rect)
+#print(rect)
+#plt.figure(1)
+#plt.plot(time_new, rect)
 
-
+T = 2000
+t = 1300
+h = 1
+start = 0
 # AIM modulation
 fd = 1/0.065
 f0 = fd*100
 w0 = 2*math.pi*f0
 m = 1
 signal_aim = []
-norm_new_signal = []
-ma = max(abs(new_signal))
-for i in range(0, len(time_new)):
-    sum = 0
-    signal_aim.append(m*new_signal[i]/ma*rect[i])
-    norm_new_signal.append(new_signal[i]/ma)
+leng = (len(norm_new_signal))
+rect = np.zeros(leng)
+rect_aim = rect_summator(start, t, T, h, norm_new_signal)
+while start <= leng:
+    rect += rect_generator((start), t, norm_new_signal[start], norm_new_signal)
+    start += T
+    print(start)
 
+for i in range(leng):
+    signal_aim.append(norm_new_signal[i]*rect_aim[i])
+    print(signal_aim[i])
 
-print(freqs)
-print(signal_aim)
-plt.figure(2)
-plt.plot(time_new, signal_aim)
+#print(freqs)
+#print(signal_aim)
+plt.figure(1)
+plt.plot(time_new, rect)
 plt.plot(time_new, norm_new_signal)
-# plt.plot(time_new, norm_new_signal)
 plt.xlabel('time(s)')
 plt.ylabel('U(mV)')
 plt.title('Signal:orange-signal, blue-mod')
 
 #Amplitude modulation spectr
-spektr_aim = abs(np.fft.fft(signal_aim))
-plt.figure(3)
+spektr_aim = abs(np.fft.fft(rect))
+plt.figure(2)
 plt.plot(freqs, spektr_aim)
 plt.plot(freqs, spektr_new)
 plt.xlabel('F(Hz)')
 plt.title('Spectr:orange-old, blue-new')
 
-
+plt.figure(3)
+plt.plot(time_new, signal_aim)
+#plt.plot(time_new, norm_new_signal)
+plt.xlabel('time(s)')
+plt.ylabel('U(mV)')
+plt.title('Signal:orange-signal, blue-mod')
 
 plt.show()
 

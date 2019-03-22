@@ -153,9 +153,9 @@ while start <= leng:
     start += T
     print(start)
 
-for i in range(leng):
-    signal_aim.append(norm_new_signal[i]*rect_aim[i])
-    print(signal_aim[i])
+# for i in range(leng):
+#     signal_aim.append(norm_new_signal[i]*rect_aim[i])
+#     print(signal_aim[i])
 
 #print(freqs)
 #print(signal_aim)
@@ -174,12 +174,12 @@ plt.plot(freqs, spektr_new)
 plt.xlabel('F(Hz)')
 plt.title('Spectr:orange-old, blue-new')
 
-plt.figure(3)
-plt.plot(time_new, signal_aim)
-#plt.plot(time_new, norm_new_signal)
-plt.xlabel('time(s)')
-plt.ylabel('U(mV)')
-plt.title('Signal:orange-signal, blue-mod')
+# plt.figure(3)
+# plt.plot(time_new, signal_aim)
+# #plt.plot(time_new, norm_new_signal)
+# plt.xlabel('time(s)')
+# plt.ylabel('U(mV)')
+# plt.title('Signal:orange-signal, blue-mod')
 
 plt.show()
 
